@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Opal Innovations</title>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-image: url('UI Elements/ROI\ Background\ \(Red\).png');
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-image: url('UI Elements/ROI\ Background\ \(Grey\).png');
+    }
+    .hidden {
+      display: none;
+    }
+    .back-button {
+      background-color: lightgray;
+    }
+    .employee-info {
+      margin-top: 20px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Start Page -->
+  <div id="startPage" class="container">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <button onclick="goToLogin()">Go to Login</button>
+  </div>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Home Page -->
+  <div id="homePage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <button onclick="goToStaffDirectory()">Go to Staff Directory</button>
+    <button onclick="goBackToStart()">Back to Start</button>
+  </div>
+
+  <!-- Staff Directory Page -->
+  <div id="staffDirectoryPage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <button onclick="goToStaffListings()">Go to Staff Listings</button>
+    <button onclick="goBackToHome()">Back</button>
+  </div>
+
+  <!-- Staff Listings Page -->
+  <div id="staffListingsPage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <button onclick="goToAddEmployee()">Add Employee</button>
+    <button onclick="goToDeleteEmployee()">Delete Employee</button>
+    <button onclick="goToGetEmployees()">Get Employees</button>
+    <button onclick="goToGetDepartments()">Get Departments</button>
+    <button onclick="goToUpdateEmployees()">Update Employees</button>
+    <button onclick="goToStaffDirectory()">Back</button>
+  </div>
+
+  <!-- Add Employee Page -->
+  <div id="addEmployeePage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <input type="text" id="newName" placeholder="Name"><br>
+    <input type="number" id="newDepartment" placeholder="Department ID"><br>
+    <input type="text" id="newPhone" placeholder="Phone"><br>
+    <input type="text" id="newStreet" placeholder="Street"><br>
+    <input type="text" id="newCity" placeholder="City"><br>
+    <input type="text" id="newState" placeholder="State"><br>
+    <input type="text" id="newZip" placeholder="ZIP"><br>
+    <input type="text" id="newCountry" placeholder="Country"><br>
+    <button onclick="addEmployee()">Add Employee</button>
+    <button class="back-button" onclick="goBackToStaffListings()">Back</button>
+  </div>
+
+  <!-- Delete Employee Page -->
+  <div id="deleteEmployeePage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <input type="number" id="deleteId" placeholder="Employee ID"><br>
+    <input type="text" id="deleteName" placeholder="Employee Name"><br>
+    <button onclick="deleteEmployee()">Delete Employee</button>
+    <button class="back-button" onclick="goBackToStaffListings()">Back</button>
+  </div>
+
+  <!-- Get Employees Page -->
+  <div id="getEmployeesPage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <div id="employeeList" class="employee-info"></div>
+    <button class="back-button" onclick="goBackToStaffListings()">Back</button>
+  </div>
+
+  <!-- Get Departments Page -->
+  <div id="getDepartmentsPage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <div id="departmentList" class="employee-info"></div>
+    <button class="back-button" onclick="goBackToStaffListings()">Back</button>
+  </div>
+
+  <!-- Update Employee Page -->
+  <div id="updateEmployeePage" class="container hidden">
+    <img src="UI Elements/ROI Logo.png" alt="ROI Logo">
+    <h1>Red Opal Innovations</h1>
+    <input type="number" id="updateId" placeholder="Employee ID"><br>
+    <input type="text" id="updateName" placeholder="Name"><br>
+    <input type="number" id="updateDepartment" placeholder="Department ID"><br>
+    <input type="text" id="updatePhone" placeholder="Phone"><br>
+    <input type="text" id="updateStreet" placeholder="Street"><br>
+    <input type="text" id="updateCity" placeholder="City"><br>
+    <input type="text" id="updateState" placeholder="State"><br>
+    <input type="text" id="updateZip" placeholder="ZIP"><br>
+    <input type="text" id="updateCountry" placeholder="Country"><br>
+    <button onclick="updateEmployee()">Update Employee</button>
+    <button class="back-button" onclick="goBackToStaffListings()">Back</button>
+  </div>
+
+  <script>
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA4DoRPSRg2pv0SeEQ1SgW_H_ZL6lIpYJc",
+  authDomain: "mobappproj2.firebaseapp.com",
+  projectId: "mobappproj2",
+  storageBucket: "mobappproj2.firebasestorage.app",
+  messagingSenderId: "345369949902",
+  appId: "1:345369949902:web:cbfd38170b743a5c8e829f",
+  measurementId: "G-0TKXN2K5RS"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+    const employees = [];
+
+    const departments = [
+      { id: 0, name: "General" },
+      { id: 1, name: "Information Communications Technology" },
+      { id: 2, name: "Finance" },
+      { id: 3, name: "Marketing" },
+      { id: 4, name: "Human Resources" }
+    ];
+
+    let currentPage = "startPage";
+
+    function goToPage(page) {
+      document.getElementById(currentPage).classList.add("hidden");
+      currentPage = page;
+      document.getElementById(page).classList.remove("hidden");
+    }
+
+    function goToLogin() {
+      goToPage("loginPage");
+    }
+
+    function login() {
+      goToPage("homePage");
+    }
+
+    function goBackToStart() {
+      goToPage("startPage");
+    }
+
+    function goToStaffDirectory() {
+      goToPage("staffDirectoryPage");
+    }
+
+    function goBackToHome() {
+      goToPage("homePage");
+    }
+
+    function goToStaffListings() {
+      goToPage("staffListingsPage");
+    }
+
+    function goBackToStaffListings() {
+      goToPage("staffListingsPage");
+    }
+
+    function goToAddEmployee() {
+      goToPage("addEmployeePage");
+    }
+
+    function goToDeleteEmployee() {
+      goToPage("deleteEmployeePage");
+    }
+
+    function goToGetEmployees() {
+      displayEmployees();
+      goToPage("getEmployeesPage");
+    }
+
+    function goToGetDepartments() {
+      displayDepartments();
+      goToPage("getDepartmentsPage");
+    }
+
+    function goToUpdateEmployees() {
+      goToPage("updateEmployeePage");
+    }
+
+    function displayEmployees() {
+  const employeeList = document.getElementById("employeeList");
+  employeeList.innerHTML = "";
+
+  // Get data from Firestore
+  db.collection("employees").get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      const employee = doc.data();
+      employeeList.innerHTML += `<p>ID: ${doc.id}, Name: ${employee.name}, Department: ${employee.department}, Phone: ${employee.phone}, Address: ${employee.street}, ${employee.city}, ${employee.state}, ${employee.zip}, ${employee.country}</p>`;
+    });
+  }).catch(error => {
+    console.error("Error fetching employees: ", error);
+  });
+}
+
+
+    function displayDepartments() {
+      const departmentList = document.getElementById("departmentList");
+      departmentList.innerHTML = "";
+      departments.forEach(department => {
+        departmentList.innerHTML += `<p>ID: ${department.id}, Name: ${department.name}</p>`;
+      });
+    }
+
+    function addEmployee() {
+  const newEmployee = {
+    name: document.getElementById("newName").value,
+    department: parseInt(document.getElementById("newDepartment").value),
+    phone: document.getElementById("newPhone").value,
+    street: document.getElementById("newStreet").value,
+    city: document.getElementById("newCity").value,
+    state: document.getElementById("newState").value,
+    zip: document.getElementById("newZip").value,
+    country: document.getElementById("newCountry").value
+  };
+
+  // Get the highest current employee ID from Firestore
+  db.collection("employees").orderBy("id", "desc").limit(1).get()
+    .then(querySnapshot => {
+      let newId = 0; // Default to 0 if no employees are in the database
+
+      if (!querySnapshot.empty) {
+        const lastEmployee = querySnapshot.docs[0].data();
+        newId = lastEmployee.id + 1; // Increment the highest ID
+      }
+
+      // Add the new employee with the incremented ID
+      const employeeWithId = { ...newEmployee, id: newId };
+
+      db.collection("employees").add(employeeWithId)
+        .then(() => {
+          goBackToStaffListings();
+        })
+        .catch(error => {
+          console.error("Error adding employee: ", error);
+        });
+    })
+    .catch(error => {
+      console.error("Error fetching highest ID: ", error);
+    });
+}
+
+
+function deleteEmployee() {
+  const id = parseInt(document.getElementById("deleteId").value);
+  const name = document.getElementById("deleteName").value;
+
+  // Find employee in Firestore by ID and delete
+  db.collection("employees").where("name", "==", name).get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      db.collection("employees").doc(doc.id).delete().then(() => {
+        goBackToStaffListings();
+      }).catch(error => {
+        console.error("Error deleting employee: ", error);
+      });
+    });
+  });
+}
+
+
+function updateEmployee() {
+  const id = parseInt(document.getElementById("updateId").value);
+  const updatedEmployee = {
+    name: document.getElementById("updateName").value,
+    department: parseInt(document.getElementById("updateDepartment").value),
+    phone: document.getElementById("updatePhone").value,
+    street: document.getElementById("updateStreet").value,
+    city: document.getElementById("updateCity").value,
+    state: document.getElementById("updateState").value,
+    zip: document.getElementById("updateZip").value,
+    country: document.getElementById("updateCountry").value
+  };
+
+  // Update employee in Firestore
+  db.collection("employees").doc(id.toString()).set(updatedEmployee).then(() => {
+    goBackToStaffListings();
+  }).catch(error => {
+    console.error("Error updating employee: ", error);
+  });
+}
+
+  </script>
+</body>
+</html>
